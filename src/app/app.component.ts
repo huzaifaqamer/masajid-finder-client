@@ -9,7 +9,7 @@ import { ContributePage } from '../pages/contribute/contribute';
 @Component({
   templateUrl: 'app.html'
 })
-export class MyApp {
+export class MFApp {
   @ViewChild(Nav) nav: Nav;
 
   rootPage: any = HomePage;
