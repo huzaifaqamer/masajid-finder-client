@@ -1,6 +1,8 @@
 {
   "name": "masajid-finder",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "ionic-angular",
   "pro_id": "05ca5457"
 }
