@@ -8,5 +8,47 @@
 </ion-header>
 
 <ion-content padding>
-  <h3>Select Namaz</h3>
+
+  <ion-list radio-group [(ngModel)]="selectedNamaz">
+
+    <ion-list-header>
+      Select Namaz
+    </ion-list-header>
+  
+    <ion-item>
+      <ion-label>Fajr</ion-label>
+      <ion-radio value="fajr"></ion-radio>
+    </ion-item>
+  
+    <ion-item>
+      <ion-label>Dhuhr</ion-label>
+      <ion-radio value="zohar"></ion-radio>
+    </ion-item>
+  
+    <ion-item>
+      <ion-label>Asr</ion-label>
+      <ion-radio value="asr"></ion-radio>
+    </ion-item>
+  
+    <ion-item>
+      <ion-label>Maghrib</ion-label>
+      <ion-radio value="maghrib"></ion-radio>
+    </ion-item>
+  
+    <ion-item>
+      <ion-label>Ishaa</ion-label>
+      <ion-radio value="isha"></ion-radio>
+    </ion-item>
+
+    <ion-item>
+        <ion-label>Jumu'ah</ion-label>
+        <ion-radio value="jumma"></ion-radio>
+      </ion-item>
+  
+  </ion-list>
+
+  <button ion-button (click)="searchMasajid($event)">
+      Search
+  </button>
+
 </ion-content>

@@ -5,6 +5,7 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { MFApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { ContributePage } from '../pages/contribute/contribute';
+import { MapPage } from '../pages/map/map';
 
 import { Geolocation } from '@ionic-native/geolocation';
 import { StatusBar } from '@ionic-native/status-bar';
@@ -14,7 +15,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   declarations: [
     MFApp,
     HomePage,
-    ContributePage
+    ContributePage,
+    MapPage
   ],
   imports: [
     BrowserModule,
@@ -24,7 +26,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   entryComponents: [
     MFApp,
     HomePage,
-    ContributePage
+    ContributePage,
+    MapPage
   ],
   providers: [
     StatusBar,
