@@ -1,6 +1,9 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
+import { Http, RequestOptions, URLSearchParams } from '@angular/http';
+import 'rxjs/add/operator/map';
+
 
 declare var google;
 
@@ -11,15 +14,19 @@ declare var google;
 export class MapPage {
 
   @ViewChild('map') mapElement: ElementRef;
-  map: any;
+  googleMap: any;
+  masajid: any;
+  dataUrl = 'http://127.0.0.1:8000/api/v0/mosques';
 
-  constructor(public navCtrl: NavController, 
+  constructor(
+    public navCtrl: NavController, 
+    public http: Http,
     public geolocation: Geolocation, 
     public navParams: NavParams) {
 
   }
 
-  ionViewDidLoad(){
+  ionViewDidLoad() {
     this.loadMap();
   }
  
@@ -35,9 +42,9 @@ export class MapPage {
         mapTypeId: google.maps.MapTypeId.ROADMAP
       }
   
-      this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
+      this.googleMap = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
 
-      this.map.addListener('idle', (e) => {
+      this.googleMap.addListener('idle', (e) => {
         this.loadMasajid();
       });
 
@@ -48,7 +55,25 @@ export class MapPage {
   }
 
   loadMasajid() {
-    console.log(this.navParams.get('namaz'))
+    let params: URLSearchParams = new URLSearchParams();
+    params.set('ne_lat', this.googleMap.getBounds().getNorthEast().lat());
+    params.set('ne_lng', this.googleMap.getBounds().getNorthEast().lng());
+    params.set('sw_lat', this.googleMap.getBounds().getSouthWest().lat());
+    params.set('sw_lng', this.googleMap.getBounds().getSouthWest().lng());
+    params.set('namaz', this.navParams.get('namaz'));
+
+    let requestOptions = new RequestOptions();
+    requestOptions.search = params;
+
+    this.http.get(this.dataUrl, requestOptions).map(res => res.json())
+    .subscribe(
+      data => {
+        this.masajid = data;
+    },
+      err => {
+        console.log('Something bad happened')
+      }
+    );
   }
 
 }
