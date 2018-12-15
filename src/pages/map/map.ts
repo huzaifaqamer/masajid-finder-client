@@ -15,7 +15,7 @@ export class MapPage {
 
   @ViewChild('map') mapElement: ElementRef;
   googleMap: any;
-  masajid: any;
+  masajidMarkers = [];
   dataUrl = 'http://127.0.0.1:8000/api/v0/mosques';
 
   constructor(
@@ -68,7 +68,8 @@ export class MapPage {
     this.http.get(this.dataUrl, requestOptions).map(res => res.json())
     .subscribe(
       data => {
-        this.masajid = data;
+        this.removeMarkers();
+        this.addMarkers(data);
     },
       err => {
         console.log('Something bad happened')
@@ -76,4 +77,35 @@ export class MapPage {
     );
   }
 
+  addMarkers(masajidData) {
+    for (let masjid of masajidData) {
+      var marker = new google.maps.Marker({
+        position: {'lat': masjid.latitude, 'lng': masjid.longitude},
+        map: this.googleMap
+      });
+      this.addInfoWindow(marker, masjid);
+      this.masajidMarkers.push(marker);
+   }
+  }
+
+  removeMarkers() {
+    for (let marker of this.masajidMarkers) {
+      marker.setMap(null);
+    }
+    this.masajidMarkers = [];
+  }
+
+  addInfoWindow(marker, masjid) {
+    let content = "<h4>" + masjid.name + "</h4>"
+    content += "<p><strong>" + this.navParams.get('namaz') + ": </strong>"
+    content += masjid[this.navParams.get('namaz')] +"</p>";
+
+    let infoWindow = new google.maps.InfoWindow({
+      content: content
+    });
+   
+    google.maps.event.addListener(marker, 'click', () => {
+      infoWindow.open(this.googleMap, marker);
+    });
+  }
 }
